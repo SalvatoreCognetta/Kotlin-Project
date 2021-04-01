@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="top_login_margin">24dp</dimen>
+    <dimen name="inter_input_login_margin">5dp</dimen>
+    <dimen name="card_corner_radius">24dp</dimen>
+</resources>
