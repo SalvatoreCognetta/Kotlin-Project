@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Login dimension -->
+    <dimen name="title_size">42sp</dimen>
+
     <dimen name="top_login_margin">24dp</dimen>
     <dimen name="inter_input_login_margin">5dp</dimen>
+    <dimen name="drawable_padding">5dp</dimen>
     <dimen name="card_corner_radius">24dp</dimen>
 </resources>
