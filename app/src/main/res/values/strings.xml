@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Vaccination</string>
     <string name="create_account">Create Account</string>
+    <string name="login">login</string>
+    <string name="email">Email</string>
+    <string name="pwd">Password</string>
 </resources>

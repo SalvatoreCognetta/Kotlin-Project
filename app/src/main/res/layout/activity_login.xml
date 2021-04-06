@@ -43,7 +43,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:hapticFeedbackEnabled="false"
-        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:cardBackgroundColor="#00FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,27 +58,49 @@
                 android:id="@+id/inputEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/input_login_margin_inter"
+                android:background="@drawable/input_border"
                 android:drawableStart="@drawable/ic_baseline_mail_24"
                 android:drawablePadding="@dimen/drawable_padding"
                 android:ems="10"
-                android:hint="Email"
-                android:inputType="textPersonName"
-                android:paddingTop="@dimen/top_login_margin"
-                android:paddingEnd="@dimen/inter_input_login_margin" />
+                android:hint="@string/email"
+                android:inputType="textPersonName|textEmailAddress"
+                android:paddingStart="@dimen/input_padding_left"
+                android:paddingTop="@dimen/input_padding_top"
+                android:paddingEnd="@dimen/input_padding_right"
+                android:paddingBottom="@dimen/input_padding_bottom" />
 
             <EditText
                 android:id="@+id/inputPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/input_login_margin_inter"
+                android:background="@drawable/input_border"
                 android:drawableStart="@drawable/ic_baseline_lock_24"
                 android:drawablePadding="@dimen/drawable_padding"
                 android:ems="10"
-                android:hint="Password"
+                android:hint="@string/pwd"
                 android:inputType="textPassword"
-                android:paddingTop="@dimen/inter_input_login_margin"
-                android:paddingBottom="@dimen/top_login_margin" />
+                android:paddingStart="@dimen/input_padding_left"
+                android:paddingTop="@dimen/input_padding_top"
+                android:paddingEnd="@dimen/input_padding_right"
+                android:paddingBottom="@dimen/input_padding_bottom" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/login_btn_bg"
+        android:text="@string/login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        app:layout_constraintVertical_bias="0.374" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
