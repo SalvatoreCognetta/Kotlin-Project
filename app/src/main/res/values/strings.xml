@@ -4,4 +4,7 @@
     <string name="login">login</string>
     <string name="email">Email</string>
     <string name="pwd">Password</string>
+    <string name="forgot_pwd">Forgot password?</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

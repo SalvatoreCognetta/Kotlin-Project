@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:backgroundTint="#FFFFFF"
-    tools:context=".LoginActivity">
+    tools:context=".Activities.LoginActivity">
 
     <ImageView
         android:id="@+id/waveView"
@@ -21,18 +21,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_wave" />
 
-    <TextView
-        android:id="@+id/appName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="32dp"
-        android:text="@string/app_name"
-        android:textAlignment="center"
-        android:textSize="@dimen/title_size"
-        app:layout_constraintBottom_toTopOf="@+id/cardView"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="148dp"
+        android:layout_height="127dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/regione_sito_vaccino_covid_2021"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,6 +40,8 @@
         android:layout_marginEnd="24dp"
         android:hapticFeedbackEnabled="false"
         app:cardBackgroundColor="#00FFFFFF"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:cardElevation="@dimen/card_elevation"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +50,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:visibility="visible">
 
             <EditText
                 android:id="@+id/inputEmail"
@@ -85,6 +84,21 @@
                 android:paddingTop="@dimen/input_padding_top"
                 android:paddingEnd="@dimen/input_padding_right"
                 android:paddingBottom="@dimen/input_padding_bottom" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:paddingLeft="@dimen/input_padding_left"
+                android:paddingTop="@dimen/input_padding_top"
+                android:paddingRight="@dimen/input_padding_right"
+                android:paddingBottom="@dimen/input_padding_bottom"
+                android:text="@string/forgot_pwd"
+                android:textAllCaps="false"
+                android:textColor="@color/purple_700"
+                android:textSize="@dimen/link_text_size"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

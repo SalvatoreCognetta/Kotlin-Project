@@ -3,6 +3,9 @@
     <!-- Login dimension -->
     <dimen name="title_size">42sp</dimen>
 
+    <dimen name="card_corner_radius">20dp</dimen>
+    <dimen name="card_elevation">0dp</dimen>
+
     <dimen name="login_margin_top">24dp</dimen>
 
     <dimen name="input_border_width">2dp</dimen>
@@ -13,6 +16,8 @@
     <dimen name="input_padding_bottom">10dp</dimen>
     <dimen name="input_padding_left">10dp</dimen>
     <dimen name="input_padding_right">10dp</dimen>
+
+    <dimen name="link_text_size">24sp</dimen>
 
     <dimen name="drawable_padding">9dp</dimen>
 </resources>

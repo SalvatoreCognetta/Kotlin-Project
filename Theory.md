@@ -1,0 +1,4 @@
+- kap: kotlin annotation processing tool
+- repository; A repository class abstracts access to multiple data sources. The repository is not part of the Architecture Components libraries, but is a suggested best practice for code separation and architecture. A Repository class provides a clean API for data access to the rest of the application.
+- ViewModel: A ViewModel holds your app's UI data in a lifecycle-conscious way that survives configuration changes. Separating your app's UI data from your Activity and Fragment classes lets you better follow the single responsibility principle: Your activities and fragments are responsible for drawing data to the screen, while your ViewModel can take care of holding and processing all the data needed for the UI.
+- 
