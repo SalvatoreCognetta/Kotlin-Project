@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/waveViewSignup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:cropToPadding="false"
+        android:scaleType="fitEnd"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_wave_signup" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:cardBackgroundColor="#00FFFFFF"
+        app:cardElevation="@dimen/card_elevation"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/waveViewSignup">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/signupTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/input_login_margin_inter"
+                android:layout_marginBottom="@dimen/input_login_margin_inter"
+                android:fontFamily="@font/abeezee"
+                android:paddingLeft="@dimen/input_padding_left"
+                android:paddingTop="@dimen/input_padding_top"
+                android:paddingRight="@dimen/input_padding_right"
+                android:paddingBottom="@dimen/input_padding_bottom"
+                android:text="@string/signup"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/inputNameSignup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/input_login_margin_inter"
+                android:background="@drawable/input_border"
+                android:drawableStart="@drawable/ic_baseline_person_24"
+                android:drawablePadding="@dimen/drawable_padding"
+                android:fontFamily="@font/abeezee"
+                android:hint="@string/name"
+                android:paddingLeft="@dimen/input_padding_left"
+                android:paddingTop="@dimen/input_padding_top"
+                android:paddingRight="@dimen/input_padding_right"
+                android:paddingBottom="@dimen/input_padding_bottom" />
+
+            <EditText
+                android:id="@+id/inputSurnameSignup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/input_login_margin_inter"
+                android:layout_marginBottom="@dimen/input_login_margin_inter"
+                android:background="@drawable/input_border"
+                android:drawableStart="@drawable/ic_baseline_person_24"
+                android:drawablePadding="@dimen/drawable_padding"
+                android:fontFamily="@font/abeezee"
+                android:hint="@string/surname"
+                android:paddingLeft="@dimen/input_padding_left"
+                android:paddingTop="@dimen/input_padding_top"
+                android:paddingRight="@dimen/input_padding_right"
+                android:paddingBottom="@dimen/input_padding_bottom" />
+
+            <EditText
+                android:id="@+id/inputEmailSignup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/input_login_margin_inter"
+                android:layout_marginBottom="@dimen/input_login_margin_inter"
+                android:background="@drawable/input_border"
+                android:drawableStart="@drawable/ic_baseline_mail_24"
+                android:drawablePadding="@dimen/drawable_padding"
+                android:fontFamily="@font/abeezee"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:paddingLeft="@dimen/input_padding_left"
+                android:paddingTop="@dimen/input_padding_top"
+                android:paddingRight="@dimen/input_padding_right"
+                android:paddingBottom="@dimen/input_padding_bottom" />
+
+            <EditText
+                android:id="@+id/inputDateBirthSignup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/input_login_margin_inter"
+                android:layout_marginBottom="@dimen/input_login_margin_inter"
+                android:background="@drawable/input_border"
+                android:drawableStart="@drawable/ic_baseline_date_range_24"
+                android:drawablePadding="@dimen/drawable_padding"
+                android:fontFamily="@font/abeezee"
+                android:hint="@string/date_birth"
+                android:inputType="date"
+                android:paddingLeft="@dimen/input_padding_left"
+                android:paddingTop="@dimen/input_padding_top"
+                android:paddingRight="@dimen/input_padding_right"
+                android:paddingBottom="@dimen/input_padding_bottom" />
+
+            <Spinner
+                android:id="@+id/spinnerRegionSignup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/input_login_margin_inter"
+                android:layout_marginBottom="@dimen/input_login_margin_inter"
+                android:background="@drawable/spinner"
+                android:paddingLeft="@dimen/spinner_text_padding"
+                android:paddingTop="@dimen/input_padding_top"
+                android:paddingRight="@dimen/input_padding_right"
+                android:paddingBottom="@dimen/input_padding_bottom"
+                android:spinnerMode="dropdown" />
+
+            <EditText
+                android:id="@+id/inputPwdSignup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/input_login_margin_inter"
+                android:layout_marginBottom="@dimen/input_login_margin_inter"
+                android:background="@drawable/input_border"
+                android:drawableStart="@drawable/ic_baseline_lock_24"
+                android:drawablePadding="@dimen/drawable_padding"
+                android:hint="@string/pwd"
+                android:inputType="textPassword"
+                android:paddingLeft="@dimen/input_padding_left"
+                android:paddingTop="@dimen/input_padding_top"
+                android:paddingRight="@dimen/input_padding_right"
+                android:paddingBottom="@dimen/input_padding_bottom" />
+
+            <EditText
+                android:id="@+id/inputRepeatPwdSignup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/input_login_margin_inter"
+                android:layout_marginBottom="@dimen/input_login_margin_inter"
+                android:background="@drawable/input_border"
+                android:drawableStart="@drawable/ic_baseline_lock_24"
+                android:drawablePadding="@dimen/drawable_padding"
+                android:hint="@string/repeat_pwd"
+                android:paddingLeft="@dimen/input_padding_left"
+                android:paddingTop="@dimen/input_padding_top"
+                android:paddingRight="@dimen/input_padding_right"
+                android:paddingBottom="@dimen/input_padding_bottom" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="32dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView2">
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/btn_margin_start"
+            android:layout_marginTop="@dimen/btn_margin_top"
+            android:layout_marginEnd="@dimen/btn_margin_end"
+            android:layout_marginBottom="@dimen/btn_margin_bottom"
+            android:background="@drawable/btn_bg"
+            android:text="Register" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

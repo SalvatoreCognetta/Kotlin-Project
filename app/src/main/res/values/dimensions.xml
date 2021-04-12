@@ -17,7 +17,17 @@
     <dimen name="input_padding_left">10dp</dimen>
     <dimen name="input_padding_right">10dp</dimen>
 
-    <dimen name="link_text_size">24sp</dimen>
+    <dimen name="link_text_size">18sp</dimen>
+
+    <dimen name="btn_width">150dp</dimen>
+    <dimen name="btn_margin_top">10dp</dimen>
+    <dimen name="btn_margin_bottom">10dp</dimen>
+    <dimen name="btn_margin_inter">5dp</dimen>
+    <dimen name="btn_margin_start">100dp</dimen>
+    <dimen name="btn_margin_end">100dp</dimen>
+
+    <dimen name="spinner_arrow_padding">10dp</dimen>
+    <dimen name="spinner_text_padding">33dp</dimen>
 
     <dimen name="drawable_padding">9dp</dimen>
 </resources>

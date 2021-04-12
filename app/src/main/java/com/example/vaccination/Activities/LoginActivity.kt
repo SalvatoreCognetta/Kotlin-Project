@@ -1,14 +1,12 @@
 package com.example.vaccination.Activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
 import com.example.vaccination.R
-import com.example.vaccination.Room.UserRepository
-import com.example.vaccination.Room.VaccinationDatabase
 
 class LoginActivity : AppCompatActivity() {
 
@@ -18,34 +16,50 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val loginBtnId = findViewById<Button>(R.id.btnLogin)
-        val emailId = findViewById<EditText>(R.id.inputEmail)
-        val pwdId = findViewById<EditText>(R.id.inputPassword)
+        val email = findViewById<EditText>(R.id.inputEmail)
+        val pwd = findViewById<EditText>(R.id.inputPwd)
+
+        val loginBtn = findViewById<Button>(R.id.btnLogin)
+        val signupBtn = findViewById<Button>(R.id.btnSignup)
 
 //        userViewModel = ViewModelProvider.of(this, LoginViewModelFactory())
 
         // Login
-        loginBtnId?.setOnClickListener() {
-            login(emailId, pwdId)
+        loginBtn?.setOnClickListener() {
+            login(loginBtn, email, pwd)
+        }
+
+        // Go to SignUp page
+        signupBtn?.setOnClickListener() {
+            // Start the Signup activity
+            val intent = Intent(applicationContext, SignupActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
     }
 
-    private fun login(emailId: EditText, pwdId: EditText) {
-        val emailText   = emailId.text.toString()
-        val pwdText     = pwdId.text.toString()
+    private fun login(loginBtn: Button, email: EditText, pwd: EditText) {
+        val emailText   = email.text.toString()
+        val pwdText     = pwd.text.toString()
 
-        if (!validateLogin(emailText, pwdText)) {
+        if (!validateLoginInput(emailText, pwdText)) {
             return
         }
 
+        loginBtn.isEnabled = false
 
-        /* else if () {
+        // TODO: Implement your own authentication logic here.
 
-        }*/
     }
 
-    private fun validateLogin(emailText: String, pwdText: String): Boolean {
+    fun onLoginSuccess(loginBtn: Button) {
+        loginBtn.isEnabled = true
+        // Go to the home
+        //startActivity(Intent(this, ...))
+    }
+
+    private fun validateLoginInput(emailText: String, pwdText: String): Boolean {
         // Check if the email input is filled and correct
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
         if (emailText.isEmpty()) {
@@ -58,8 +72,6 @@ class LoginActivity : AppCompatActivity() {
             Toast.makeText(applicationContext, "Enter password", Toast.LENGTH_SHORT).show()
             return false
         }
-
-        // TODO: Implement your own authentication logic here.
 
         return true
     }
