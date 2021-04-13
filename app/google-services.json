@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "720714238520",
+    "project_id": "vaccinationsapienza",
+    "storage_bucket": "vaccinationsapienza.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:720714238520:android:c1e74805e4a6a1dc2a74cd",
+        "android_client_info": {
+          "package_name": "com.example.vaccination"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "720714238520-goe3j8qt30u1g272hi4ps3n3k4fpqof4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0emaYRnVxvNVrMBXjywFsUiQpKKNRRIg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "720714238520-goe3j8qt30u1g272hi4ps3n3k4fpqof4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

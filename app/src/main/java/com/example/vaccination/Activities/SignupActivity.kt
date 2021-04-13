@@ -2,9 +2,18 @@ package com.example.vaccination.Activities
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.vaccination.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
@@ -18,8 +27,13 @@ class SignupActivity : AppCompatActivity() {
     private lateinit var email: EditText
     private lateinit var dateBirth: EditText
     private lateinit var regionSpinner: Spinner
+    private lateinit var selectedRegion: String
+    private var selectedRegionPos: Int = 0
     private lateinit var pwd: EditText
     private lateinit var repeatPwd: EditText
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var firebaseDb: DatabaseReference
 
     val datePattern: String = "dd/MM/yyyy"
 
@@ -38,6 +52,17 @@ class SignupActivity : AppCompatActivity() {
         repeatPwd = findViewById<EditText>(R.id.inputRepeatPwdSignup)
 
         registerBtn = findViewById<Button>(R.id.btnRegister)
+
+        // Initialize Firebase Auth
+        auth = Firebase.auth
+        // Initialize Firebase Database
+        firebaseDb = Firebase.database.reference
+
+//        firebaseDb.child("users").child("0").get().addOnSuccessListener {
+//            Log.i(TAG + "firebase", "Got value ${it.value}")
+//        }.addOnFailureListener{
+//            Log.e(TAG + "firebase", "Error getting data", it)
+//        }
 
         // Show Date Picker both on focus (when the input is clicked for the first time) and
         // on click (when the input is clicked with the focus already on the input itself)
@@ -60,8 +85,17 @@ class SignupActivity : AppCompatActivity() {
             // Apply the adapter to the spinner
             regionSpinner.adapter = adapter
         }
-        regionSpinner.onItemSelectedListener
+        regionSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                selectedRegion = parent?.getItemAtPosition(position).toString()
+                selectedRegionPos = position
+//                Toast.makeText(applicationContext, "Region:" + position + selectedRegion, Toast.LENGTH_SHORT).show()
+            }
 
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // TODO("Not yet implemented")
+            }
+        }
 
         // Login
         registerBtn?.setOnClickListener() {
@@ -70,13 +104,53 @@ class SignupActivity : AppCompatActivity() {
 
     }
 
+    public override fun onStart() {
+        super.onStart()
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = auth.currentUser
+        if(currentUser != null){
+            reload();
+        }
+    }
+
+    private fun reload() {
+        // TODO("Not yet implemented")
+    }
+
     private fun register(): Boolean {
+        val emailText   = email.text.toString()
+        val pwdText     = pwd.text.toString()
 
         if (!validateSignupInput()) {
             return false
         }
+
+        registerBtn.isEnabled = false
+
+        auth.createUserWithEmailAndPassword(emailText, pwdText)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "createUserWithEmail:success")
+                    val user = auth.currentUser
+                    // TODO write on the database
+                    // ...
+                    updateUI(user)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                    Toast.makeText(baseContext, "Authentication failed.",
+                        Toast.LENGTH_SHORT).show()
+                    updateUI(null)
+                }
+                registerBtn.isEnabled = true
+            }
         
         return true
+    }
+
+    private fun updateUI(user: FirebaseUser?) {
+        // TODO implement
     }
 
     private fun showDatePicker() {
@@ -103,7 +177,7 @@ class SignupActivity : AppCompatActivity() {
         val surnameText = surname.text.toString()
         val dateBirthText = dateBirth.text.toString()
         val emailText = email.text.toString()
-        val region = region.text.toString()
+        val region = selectedRegionPos
         val pwdText = pwd.text.toString()
         val repeatPwdText = repeatPwd.text.toString()
 
@@ -137,6 +211,10 @@ class SignupActivity : AppCompatActivity() {
         val formatter = DateTimeFormatter.ofPattern(datePattern)
         try {
             val formattedDate = LocalDate.parse(dateBirthText, formatter)
+            if (formattedDate.year >= Calendar.getInstance().get(Calendar.YEAR)) {
+                Toast.makeText(applicationContext, "Invalid year", Toast.LENGTH_SHORT).show()
+                return false
+            }
         } catch (exc: DateTimeParseException) {
             Toast.makeText(applicationContext, "Invalid date", Toast.LENGTH_SHORT).show()
             return false
@@ -146,7 +224,10 @@ class SignupActivity : AppCompatActivity() {
         }
 
         // Check Region
-
+        if (region == 0) {
+            Toast.makeText(applicationContext, "Enter region of residence", Toast.LENGTH_SHORT).show()
+            return false
+        }
 
         // Check if the password input is filled
         if (pwdText.isEmpty()) {
@@ -158,11 +239,17 @@ class SignupActivity : AppCompatActivity() {
             return false
         }
 
+        // TODO check some pwd criteria
+
         if (!pwdText.equals(repeatPwdText)) {
             Toast.makeText(applicationContext, "Password must be the same", Toast.LENGTH_SHORT).show()
             return false
         }
 
         return true
+    }
+
+    companion object {
+        private const val TAG = "SignupActivity"
     }
 }
