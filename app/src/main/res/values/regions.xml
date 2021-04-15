@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="regions_array">
-        <item></item>
-        <item id="1">Test</item>
+        <item>Region</item>
         <item>Campania</item>
         <item>Lazio</item>
     </string-array>

@@ -5,5 +5,5 @@
         android:startColor="@color/secondaryColor"
         android:endColor="@color/purple_200"
         android:angle="45"/>
-    <corners android:radius="@dimen/input_corner_radius"/>
+    <corners android:radius="@dimen/btn_corner_radius"/>
 </shape>

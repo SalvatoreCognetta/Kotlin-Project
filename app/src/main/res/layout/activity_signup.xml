@@ -26,7 +26,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         app:cardBackgroundColor="#00FFFFFF"
-        app:cardElevation="@dimen/card_elevation"
+        app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -188,8 +188,8 @@
             android:layout_marginTop="@dimen/btn_margin_top"
             android:layout_marginEnd="@dimen/btn_margin_end"
             android:layout_marginBottom="@dimen/btn_margin_bottom"
-            android:background="@drawable/btn_bg"
-            android:text="Register" />
+            android:text="Register"
+            app:cornerRadius="@dimen/btn_corner_radius" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

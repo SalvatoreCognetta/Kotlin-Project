@@ -11,6 +11,7 @@
     <string name="pwd">Password</string>
     <string name="repeat_pwd">Repeat Password</string>
     <string name="forgot_pwd">Forgot your password?</string>
+    <string name="recover_pwd">Recover password</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

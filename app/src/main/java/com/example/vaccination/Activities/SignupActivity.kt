@@ -6,12 +6,16 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.example.vaccination.Firebase.User
+import com.example.vaccination.Firebase.UserDao
 import com.example.vaccination.R
+import com.example.vaccination.Utils.validateEmail
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.core.utilities.Utilities
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.time.LocalDate
@@ -118,7 +122,11 @@ class SignupActivity : AppCompatActivity() {
     }
 
     private fun register(): Boolean {
+        val nameText    = name.text.toString()
+        val surnameText = surname.text.toString()
         val emailText   = email.text.toString()
+        val dateBirthText = dateBirth.text.toString()
+        val regionText  = selectedRegion
         val pwdText     = pwd.text.toString()
 
         if (!validateSignupInput()) {
@@ -133,13 +141,18 @@ class SignupActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = auth.currentUser
-                    // TODO write on the database
-                    // ...
+                    val uid = user.uid
+                    // Write on the database
+                    var newUser = User(nameText, surnameText, emailText, dateBirthText, regionText, uid)
+                    UserDao.insert(firebaseDb, newUser)
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                    Toast.makeText(baseContext, "Authentication failed.",
+                    var message: String? = ""
+                    if (task.exception != null)
+                        message = ": " + task.exception!!.message
+                    Toast.makeText(baseContext, "Authentication failed" + message,
                         Toast.LENGTH_SHORT).show()
                     updateUI(null)
                 }
@@ -193,12 +206,9 @@ class SignupActivity : AppCompatActivity() {
         }
 
         // Check if the email input is filled and correct
-        val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
-        if (emailText.isEmpty()) {
-            Toast.makeText(applicationContext, "Enter email address", Toast.LENGTH_SHORT).show()
-            return false
-        } else if (!emailText.trim { it <= ' ' }.matches(emailPattern.toRegex())) {
-            Toast.makeText(applicationContext, "Invalid email address", Toast.LENGTH_SHORT).show()
+        val errorMsg = validateEmail(emailText)
+        if (errorMsg.isNotEmpty()) {
+            Toast.makeText(applicationContext, errorMsg, Toast.LENGTH_SHORT).show()
             return false
         }
 
