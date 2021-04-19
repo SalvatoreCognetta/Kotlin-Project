@@ -107,7 +107,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun updateUI(user: FirebaseUser?) {
-        // TODO implement
+        // TODO complete implementation
+        if (user != null) {
+            val intent = Intent(applicationContext, MainActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun login() {

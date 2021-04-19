@@ -34,4 +34,8 @@
     <dimen name="go_back_btn_margin_bottom">10dp</dimen>
 
     <dimen name="drawable_padding">9dp</dimen>
+
+    <dimen name="fragment_padding_top">20dp</dimen>
+    <dimen name="fragment_padding_start">10dp</dimen>
+    <dimen name="fragment_padding_end">10dp</dimen>
 </resources>
