@@ -15,12 +15,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (supportActionBar != null)
+            supportActionBar?.hide()
+
         setContentView(R.layout.activity_main)
 
         bottomNavigationView = findViewById(R.id.bottom_nav)
 
         setUpNavigation()
-
     }
 
     private fun setUpNavigation() {

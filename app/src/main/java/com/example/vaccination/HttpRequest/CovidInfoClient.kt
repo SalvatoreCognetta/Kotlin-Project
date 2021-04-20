@@ -18,8 +18,8 @@ class CovidInfoClient {
         covidInfoAPI = retrofit.create(CovidInfoAPI::class.java)
     }
 
-    fun getCovidInfo(): Call<List<CovidInfoModel>> {
-        return covidInfoAPI.getCovidInfo()
+    fun getCovidInfo(region: String): Call<List<CovidInfoModel>> {
+        return covidInfoAPI.getCovidInfo(region)
     }
 
     fun insertCovidInfo(covidInfo: CovidInfoModel) : Call<String> {

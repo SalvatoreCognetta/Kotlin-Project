@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.navigation.fragment.NavHostFragment
+import com.example.vaccination.HttpRequest.CovidInfoClient
 import com.example.vaccination.HttpRequest.VaccinationInfoClient
+import com.example.vaccination.Model.CovidInfoModel
 import com.example.vaccination.Model.VaccinationInfoModel
 import com.example.vaccination.R
 import retrofit2.Call
@@ -33,6 +35,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var navigateBtn: Button
     private lateinit var vacciantionInfoText: TextView
+    private lateinit var covidInfoAbruzzoText: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,17 +56,12 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        navigateBtn = view.findViewById(R.id.navigateBtn)
-        navigateBtn.setOnClickListener {
-            NavHostFragment.findNavController(this).navigate(R.id.action_homeFragment_to_bookingFragment)
-        }
-
         vacciantionInfoText = view.findViewById(R.id.vaccinationInfoText)
 
-        val restApi = VaccinationInfoClient()
-        val call = restApi.getVaccinationInfo()
+        val vaccinationRestApi = VaccinationInfoClient()
+        val vaccinationCall = vaccinationRestApi.getVaccinationInfo()
 
-        call?.enqueue(object : Callback<List<VaccinationInfoModel>> {
+        vaccinationCall?.enqueue(object : Callback<List<VaccinationInfoModel>> {
             override fun onFailure(call: Call<List<VaccinationInfoModel>>, t: Throwable) {
                 Log.v(TAG, t.message!!)
             }
@@ -75,6 +73,33 @@ class HomeFragment : Fragment() {
                     vaccinationInfo = body[0]
                     Log.v(TAG, vaccinationInfo.toString())
                     vacciantionInfoText.text = vaccinationInfo.textInfo
+                }
+
+            }
+        })
+
+
+        covidInfoAbruzzoText = view.findViewById(R.id.covidInfoAbruzzoText)
+
+        val covidRestApi = CovidInfoClient()
+        val call = covidRestApi.getCovidInfo("Abruzzo")
+
+        call?.enqueue(object : Callback<List<CovidInfoModel>> {
+            override fun onFailure(call: Call<List<CovidInfoModel>>, t: Throwable) {
+                Log.v(TAG, t.message!!)
+                covidInfoAbruzzoText.text = "No data available"
+            }
+
+            override fun onResponse(call: Call<List<CovidInfoModel>>, response: Response<List<CovidInfoModel>>) {
+                val body = response.body()
+                var covidInfo: CovidInfoModel? = null
+                if (body != null && body.isNotEmpty()) {
+                    covidInfo = body[0]
+                    Log.v(TAG, covidInfo.toString())
+                    covidInfoAbruzzoText.text = covidInfo.toString()
+                } else {
+                    Log.v(TAG, "null body")
+                    covidInfoAbruzzoText.text = "No data available"
                 }
 
             }

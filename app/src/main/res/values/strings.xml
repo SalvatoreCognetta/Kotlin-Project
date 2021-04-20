@@ -16,6 +16,9 @@
     <!-- Home fragment-->
     <string name="title_home">Covid situation in Italy</string>
 
+    <!-- Booking fragment-->
+    <string name="title_booking">Book vaccine</string>
+
     <!-- Bottom navigation text -->
     <string name="home">Home</string>
     <string name="booking">Book</string>

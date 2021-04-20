@@ -98,16 +98,11 @@ class LoginActivity : AppCompatActivity() {
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
         if(currentUser != null){
-            reload(); // TODO implement
+            updateUI(currentUser)
         }
     }
 
-    private fun reload() {
-        //TODO("Not yet implemented")
-    }
-
     private fun updateUI(user: FirebaseUser?) {
-        // TODO complete implementation
         if (user != null) {
             val intent = Intent(applicationContext, MainActivity::class.java)
             startActivity(intent)

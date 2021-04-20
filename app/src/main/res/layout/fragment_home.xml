@@ -11,6 +11,7 @@
         android:id="@+id/homeScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/lavender_blue"
         android:fillViewport="false">
 
         <RelativeLayout
@@ -22,37 +23,33 @@
             android:paddingTop="@dimen/fragment_padding_top"
             android:paddingEnd="@dimen/fragment_padding_end">
 
-            <TextView
-                android:id="@+id/titleHome"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/abeezee"
-                android:text="@string/title_home"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+            <RelativeLayout
+                android:id="@+id/titleLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <Button
-                android:id="@+id/refreshCovidInfoBtn"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignBottom="@id/titleHome"
-                android:layout_marginStart="5dp"
-                android:layout_toRightOf="@id/titleHome"
-                android:background="@drawable/ic_enter"
-                app:icon="@drawable/ic_refresh"
-                app:iconGravity="textStart"
-                app:iconPadding="0dp" />
+                <TextView
+                    android:id="@+id/titleHome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/abeezee"
+                    android:text="@string/title_home"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/vaccinationInfoCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/titleHome"
+                android:layout_below="@id/titleLayout"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                app:cardBackgroundColor="#f0f4ef"
                 app:cardCornerRadius="@dimen/card_corner_radius"
-                app:cardElevation="@dimen/card_elevation"
-                app:strokeColor="@color/secondaryColor"
-                app:strokeWidth="1.5dp">
+                app:cardElevation="@dimen/card_elevation">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -71,15 +68,25 @@
 
             </com.google.android.material.card.MaterialCardView>
 
+            <TextView
+                android:id="@+id/titleAbruzzoCovid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignWithParentIfMissing="false"
+                android:layout_below="@id/vaccinationInfoCard"
+                android:fontFamily="@font/abeezee"
+                android:text="Abruzzo"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:visibility="visible" />
+
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/covidInfoAbruzzoCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/vaccinationInfoCard"
+                android:layout_below="@id/titleAbruzzoCovid"
                 app:cardCornerRadius="@dimen/card_corner_radius"
-                app:cardElevation="@dimen/card_elevation"
-                app:strokeColor="@color/secondaryColor"
-                app:strokeWidth="1.5dp">
+                app:cardElevation="@dimen/card_elevation">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -97,14 +104,6 @@
                 </RelativeLayout>
 
             </com.google.android.material.card.MaterialCardView>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/navigateBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/covidInfoAbruzzoCard"
-                android:layout_alignParentBottom="false"
-                android:text="navigate" />
 
         </RelativeLayout>
     </ScrollView>

@@ -1,6 +1,7 @@
 package com.example.vaccination.Activities
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -62,12 +63,6 @@ class SignupActivity : AppCompatActivity() {
         // Initialize Firebase Database
         firebaseDb = Firebase.database.reference
 
-//        firebaseDb.child("users").child("0").get().addOnSuccessListener {
-//            Log.i(TAG + "firebase", "Got value ${it.value}")
-//        }.addOnFailureListener{
-//            Log.e(TAG + "firebase", "Error getting data", it)
-//        }
-
         // Show Date Picker both on focus (when the input is clicked for the first time) and
         // on click (when the input is clicked with the focus already on the input itself)
         dateBirth.setOnFocusChangeListener { view, hasFocus ->
@@ -113,12 +108,8 @@ class SignupActivity : AppCompatActivity() {
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
         if(currentUser != null){
-            reload();
+            updateUI(currentUser)
         }
-    }
-
-    private fun reload() {
-        // TODO("Not yet implemented")
     }
 
     private fun register(): Boolean {
@@ -163,7 +154,10 @@ class SignupActivity : AppCompatActivity() {
     }
 
     private fun updateUI(user: FirebaseUser?) {
-        // TODO implement
+        if (user != null) {
+            val intent = Intent(applicationContext, MainActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun showDatePicker() {

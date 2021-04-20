@@ -5,10 +5,44 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.BookingFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:background="@color/lavender_blue"
+        android:paddingStart="@dimen/fragment_padding_start"
+        android:paddingTop="@dimen/fragment_padding_top"
+        android:paddingEnd="@dimen/fragment_padding_end">
 
+        <TextView
+            android:id="@+id/bookVaccineTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/abeezee"
+            android:text="@string/title_booking"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/selectCovidCenterTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bookVaccineTitle"
+            android:fontFamily="@font/abeezee"
+            android:text="Select the vaccination center" />
+
+        <Spinner
+            android:id="@+id/covidCenterSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/selectCovidCenterTitle" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/covidCenterSpinner"
+            android:layout_alignRight="@id/covidCenterSpinner"
+            android:layout_alignParentBottom="false"
+            android:text="Book"
+            android:visibility="visible" />
+    </RelativeLayout>
 </FrameLayout>

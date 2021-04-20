@@ -2,6 +2,9 @@
 <resources>
     <color name="primaryColor">#814EDC</color>
     <color name="secondaryColor">#ff207d94</color>
+    <color name="backgroudColor">#30A1D5</color>
+    <color name="lavender_blue">#D4CDF4</color>
+    <color name="burnished_brown">#A27F7C</color>
 
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
