@@ -18,6 +18,7 @@
 
     <!-- Booking fragment-->
     <string name="title_booking">Book vaccine</string>
+    <string name="first_step_text">We have received your prenotation and will inform you soon</string>
 
     <!-- Bottom navigation text -->
     <string name="home">Home</string>

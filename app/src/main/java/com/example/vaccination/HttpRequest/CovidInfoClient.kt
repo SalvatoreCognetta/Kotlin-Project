@@ -22,6 +22,10 @@ class CovidInfoClient {
         return covidInfoAPI.getCovidInfo(region)
     }
 
+    fun getCovidInfo(): Call<List<CovidInfoModel>> {
+        return covidInfoAPI.getCovidInfo()
+    }
+
     fun insertCovidInfo(covidInfo: CovidInfoModel) : Call<String> {
         return covidInfoAPI.insertCovidInfo(covidInfo)
     }

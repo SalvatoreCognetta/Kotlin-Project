@@ -11,18 +11,28 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
+import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.example.vaccination.HttpRequest.CovidCenterClient
+import com.example.vaccination.HttpRequest.VaccinePrenotationClient
 import com.example.vaccination.Model.CovidCenterModel
+import com.example.vaccination.Model.VaccinePrenotationModel
 import com.example.vaccination.R
+import com.example.vaccination.Utils.*
+import com.google.android.material.card.MaterialCardView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -40,9 +50,17 @@ class BookingFragment : Fragment() {
     private var param2: String? = null
 
     private lateinit var locationManager: LocationManager
+    private lateinit var locationCenterBtn: Button
+    private lateinit var bookBtn: Button
     private lateinit var covidCenterSpinner: Spinner
     private lateinit var selectedCenter: String
     private var selectedCenterPos: Int = 0
+    private lateinit var latitude: Number
+    private lateinit var longitude: Number
+    private var covidCenterLocations: MutableList<Location> = mutableListOf()
+    private lateinit var auth: FirebaseAuth
+    private var covidCentersList : MutableList<CovidCenterModel> = mutableListOf()
+    private lateinit var bookingProgressLayout: RelativeLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,9 +71,12 @@ class BookingFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
+        // Initialize Firebase Auth
+        auth = Firebase.auth
+        getVaccinePrenotation()
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_booking, container, false)
     }
@@ -63,11 +84,50 @@ class BookingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        covidCenterSpinner = view.findViewById(R.id.covidCenterSpinner)
 
+        locationCenterBtn = view.findViewById(R.id.locationCenterBtn)
+        covidCenterSpinner = view.findViewById(R.id.covidCenterSpinner)
+        bookBtn = view.findViewById(R.id.bookBtn)
+        bookingProgressLayout = view.findViewById(R.id.bookingProgressLayout)
+        bookingProgressLayout.isVisible = false
+
+        //if no prenotation
+        // Get all the covid centers by rest call
+        getCovidCenters()
+
+        // Set a listener on the spinner
+        covidCenterSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                selectedCenter = parent?.getItemAtPosition(position).toString()
+                selectedCenterPos = position
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // TODO("Not yet implemented")
+            }
+        }
+
+        // When clicked on location btn set the nearest covid center
+        locationCenterBtn.setOnClickListener() {
+            locationCenterBtn.isEnabled = false
+            getLocation()
+        }
+
+        bookBtn.setOnClickListener() {
+            if (selectedCenterPos == 0) {
+                Toast.makeText(activity, "Select a vaccine center", Toast.LENGTH_SHORT).show()
+            } else {
+                bookBtn.isEnabled = false
+                sendVaccinePrenotation()
+            }
+
+        }
+    }
+
+    private fun getCovidCenters() {
         // Get all the covid center by calling the rest api
-        val covideCenterRestApi = CovidCenterClient()
-        val covidCenterCall = covideCenterRestApi.getAllCovidCenter()
+        val covidCenterRestApi = CovidCenterClient()
+        val covidCenterCall = covidCenterRestApi.getAllCovidCenter()
 
         var covidCenters : List<CovidCenterModel>
 
@@ -77,26 +137,29 @@ class BookingFragment : Fragment() {
             }
 
             override fun onResponse(
-                call: Call<List<CovidCenterModel>>,
-                response: Response<List<CovidCenterModel>>
+                    call: Call<List<CovidCenterModel>>,
+                    response: Response<List<CovidCenterModel>>
             ) {
                 val body = response.body()
+                Log.v(TAG, body.toString())
                 if (body != null && body.isNotEmpty()) {
-                    covidCenters = body
-                    Log.v(TAG, covidCenters.toString())
-//                    vacciantionInfoText.text = vaccinationInfo.textInfo
+                    covidCentersList = body.toMutableList()
+                    Log.v(TAG, covidCentersList.toString())
+
+                    for (center in covidCentersList) {
+                        covidCenterLocations.add(center.getLocation())
+                    }
 
                     // Populate the spinner
-                    var covidCentersArr = arrayOfNulls<String>(covidCenters.size+2)
+                    var covidCentersArr = arrayOfNulls<String>(covidCentersList.size + 1)
                     covidCentersArr[0] = "Choose center"
-                    covidCentersArr[1] = "Select nearest center"
-                    for (i in 0 until covidCenters.size) {
-                        covidCentersArr[i+2] = covidCenters[i].location
+                    for (i in 0 until covidCentersList.size) {
+                        covidCentersArr[i + 1] = covidCentersList[i].location
                     }
 
                     // Create an ArrayAdapter using the string array and a default spinner layout
                     val spinnerArrayAdapter: ArrayAdapter<String> =
-                        ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, covidCentersArr)
+                            ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, covidCentersArr)
                     // Specify the layout to use when the list of choices appears
                     spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     // Apply the adapter to the spinner
@@ -105,44 +168,100 @@ class BookingFragment : Fragment() {
 
             }
         })
+    }
 
-        covidCenterSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                selectedCenter = parent?.getItemAtPosition(position).toString()
-                selectedCenterPos = position
-                if (position == 1) {
-                    Log.i(TAG, "position")
-                    getLocation()
+    private fun sendVaccinePrenotation() {
+        var vaccinePrenotation = VaccinePrenotationModel(auth.currentUser.uid, selectedCenter, Date(), null, null)
+        // Get all the covid center by calling the rest api
+        val vaccinePrenotationRestApi = VaccinePrenotationClient()
+        Log.i(TAG, vaccinePrenotation.toString())
+        val vaccinePrenotationCall = vaccinePrenotationRestApi.insertVaccinePrenotation(vaccinePrenotation)
+
+        vaccinePrenotationCall?.enqueue(object : Callback<String> {
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.v(TAG, t.message!!)
+                Toast.makeText(activity, "Failed to send the request", Toast.LENGTH_SHORT).show()
+                bookBtn.isEnabled = true
+            }
+
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                val body = response.body()
+                if (body != null) {
+                    val vaccineId = body
+                    Log.v(TAG, vaccineId.toString())
+                    Toast.makeText(activity, "Booking request sent", Toast.LENGTH_SHORT).show()
+                    val ft: FragmentTransaction = parentFragmentManager.beginTransaction()
+                    ft.detach(this@BookingFragment).attach(this@BookingFragment).commit()
+                }
+                bookBtn.isEnabled = true
+            }
+        })
+    }
+
+    private fun getVaccinePrenotation() {
+        // Get all the covid center by calling the rest api
+        val vaccinePrenotationRestApi = VaccinePrenotationClient()
+        val vaccinePrenotationCall = vaccinePrenotationRestApi.getVaccinePrenotationByUid(auth.currentUser.uid)
+
+        vaccinePrenotationCall?.enqueue(object : Callback<List<VaccinePrenotationModel>> {
+            override fun onFailure(call: Call<List<VaccinePrenotationModel>>, t: Throwable) {
+                Log.v(TAG, t.message!!)
+                Toast.makeText(activity, "Failed to send the request", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onResponse(call: Call<List<VaccinePrenotationModel>>, response: Response<List<VaccinePrenotationModel>>) {
+                val body = response.body()
+                if (body != null && body.isNotEmpty()) {
+                    // There are prenotations
+                    val booking = body[0]
+                    Log.v(TAG, booking.toString())
+                    disableBooking()
+                    showProgressLayout(booking)
                 }
             }
+        })
+    }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                // TODO("Not yet implemented")
-            }
+    private fun disableBooking() {
+        locationCenterBtn.isEnabled = false
+        covidCenterSpinner.isEnabled = false
+        bookBtn.isEnabled = false
+    }
+
+    private fun showProgressLayout(booking: VaccinePrenotationModel) {
+        val formatter = SimpleDateFormat("HH:mm:ss dd/MM/yyyy")
+        bookingProgressLayout.isVisible = true
+
+        if (booking.dateFirstDose != null) {
+            requireView().findViewById<TextView>(R.id.secondStepIcon).background = ResourcesCompat.getDrawable(resources, R.drawable.btn_bg, null)
+            val formattedDate = formatter.format(booking.dateFirstDose)
+            requireView().findViewById<TextView>(R.id.secondStepText).text = "Your first vaccination dose will be administered on $formattedDate at ${booking.covidCenter}"
+            requireView().findViewById<MaterialCardView>(R.id.secondStepCard).isVisible = true
+        }
+
+        if (booking.dateSecondDose != null) {
+            requireView().findViewById<TextView>(R.id.thirdStepIcon).background = ResourcesCompat.getDrawable(resources, R.drawable.btn_bg, null)
+            val formattedDate = formatter.format(booking.dateSecondDose)
+            requireView().findViewById<TextView>(R.id.thirdStepText).text = "Your second vaccination dose will be administered on $formattedDate at ${booking.covidCenter}"
+            requireView().findViewById<MaterialCardView>(R.id.thirdStepCard).isVisible = true
         }
     }
 
-
     private fun requestPermissionGps() {
         if(ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
+                        requireContext(),
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
             && ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED) {
+                        requireContext(),
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(
-                requireActivity(), arrayOf(
+                    requireActivity(), arrayOf(
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION
-                ),
-                PERMISSION_REQUEST_ACCESS_FINE_LOCATION
+            ),
+                    PERMISSION_REQUEST_ACCESS_FINE_LOCATION
             )
         }
     }
@@ -155,6 +274,16 @@ class BookingFragment : Fragment() {
                 var longitute = location!!.longitude
 
                 Log.i(TAG, "Latitute: $latitute ; Longitute: $longitute")
+
+                // Compute nearest
+                var nearestLoc = getClosestLocation(location, covidCenterLocations)
+
+                Log.i(TAG, "Closest Latitude: ${nearestLoc.first.longitude} ; Longitude: ${nearestLoc.first.latitude}")
+
+                covidCenterSpinner.setSelection(nearestLoc.second + 1)
+
+                locationCenterBtn.isEnabled = true
+
                 locationManager.removeUpdates(this)
             }
 
@@ -174,18 +303,14 @@ class BookingFragment : Fragment() {
             return
         }
         locationManager!!.requestLocationUpdates(
-            LocationManager.NETWORK_PROVIDER,
-            0L,
-            0f,
-            locationListener
+                LocationManager.NETWORK_PROVIDER,
+                0L,
+                0f,
+                locationListener
         )
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         Log.i("onRequestPermissionsResult", "Latitute: ")
         if (requestCode == PERMISSION_REQUEST_ACCESS_FINE_LOCATION) {

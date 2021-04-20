@@ -11,6 +11,9 @@ interface CovidInfoAPI {
     @GET(CovidInfoClient.URL+"/{region}")
     fun getCovidInfo(@Path("region") region: String) : Call<List<CovidInfoModel>>
 
+    @GET(CovidInfoClient.URL)
+    fun getCovidInfo() : Call<List<CovidInfoModel>>
+
     @POST(CovidInfoClient.URL)
     fun insertCovidInfo(vaccinationInfo: CovidInfoModel) : Call<String>
 }
