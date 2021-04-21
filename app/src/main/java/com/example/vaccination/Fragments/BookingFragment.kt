@@ -190,6 +190,7 @@ class BookingFragment : Fragment() {
                     val vaccineId = body
                     Log.v(TAG, vaccineId.toString())
                     Toast.makeText(activity, "Booking request sent", Toast.LENGTH_SHORT).show()
+                    // Refresh fragment
                     val ft: FragmentTransaction = parentFragmentManager.beginTransaction()
                     ft.detach(this@BookingFragment).attach(this@BookingFragment).commit()
                 }

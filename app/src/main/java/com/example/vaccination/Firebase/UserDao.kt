@@ -19,7 +19,10 @@ class UserDao {
             db.child(User.user_table_name).child(key).get().addOnSuccessListener {
                 Log.i(TAG, "Got user ${key}")
                 userRet = it.getValue(User::class.java)
+            }.addOnFailureListener{
+                Log.e(TAG, "Error getting data", it)
             }
+
             return userRet!!
         }
 

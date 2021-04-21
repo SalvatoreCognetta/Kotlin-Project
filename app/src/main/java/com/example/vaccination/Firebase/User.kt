@@ -4,12 +4,12 @@ import com.google.firebase.database.Exclude
 
 
 data class User(
-    val name: String? = null,
-    val surname: String? = null,
-    val email: String? = null,
-    val birthday: String? = null,
-    val region: String? = null,
-    val uid: String? = null) {
+    var name: String? = null,
+    var surname: String? = null,
+    var email: String? = null,
+    var birthday: String? = null,
+    var region: String? = null,
+    var uid: String? = null) {
 
     @Exclude
     fun toMap(): Map<String, Any?> {

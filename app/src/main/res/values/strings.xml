@@ -9,6 +9,8 @@
     <string name="region">Region of residence</string>
     <string name="email">Email</string>
     <string name="pwd">Password</string>
+    <string name="old_pwd">Old Password</string>
+    <string name="new_pwd">New Password</string>
     <string name="repeat_pwd">Repeat Password</string>
     <string name="forgot_pwd">Forgot your password?</string>
     <string name="recover_pwd">Recover password</string>

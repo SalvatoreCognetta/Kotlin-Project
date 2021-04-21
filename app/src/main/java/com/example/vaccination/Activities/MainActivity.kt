@@ -2,17 +2,29 @@ package com.example.vaccination.Activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.example.vaccination.Firebase.User
+import com.example.vaccination.Fragments.AccountPageFragment
 import com.example.vaccination.R
 import com.example.vaccination.Utils.OnBackPressedInterface
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var bottomNavigationView: BottomNavigationView
+    private lateinit var auth: FirebaseAuth
+    private lateinit var firebaseDb: DatabaseReference
+
+    var accountLocal: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,14 +32,23 @@ class MainActivity : AppCompatActivity() {
             supportActionBar?.hide()
 
         setContentView(R.layout.activity_main)
-/*
-        //Set starting fragment
-        val startupFragment = HomeFragment()
-        val fragmentManager = supportFragmentManager
-        fragmentManager.beginTransaction()
-                .add(R.id., startupFragment, "startupFragmentTag")
-                .addToBackStack(null)
-                .commit()*/
+
+
+        // Initialize Firebase Auth
+        auth = Firebase.auth
+        // Initialize Firebase Database
+        firebaseDb = Firebase.database.reference
+
+        val uid = auth.currentUser.uid
+
+        firebaseDb.child(User.user_table_name).child(uid).get().addOnSuccessListener {
+            Log.i(TAG, "Got user ${uid}")
+
+            accountLocal = it.getValue(User::class.java)
+
+        }.addOnFailureListener{
+            Log.e(TAG, "Error getting data", it)
+        }
 
         bottomNavigationView = findViewById(R.id.bottom_nav)
 
@@ -51,4 +72,9 @@ class MainActivity : AppCompatActivity() {
         }
         super.onBackPressed()
     }
+
+    companion object {
+        private val TAG = "MainActivity"
+    }
+
 }
